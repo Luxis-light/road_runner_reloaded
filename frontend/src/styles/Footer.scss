@@ -1,0 +1,28 @@
+@import 'varibles';
+
+.footer {
+  width: 100%;
+  padding: ($ruler * 2) $ruler; // 32px oben/unten, 16px links/rechts
+  margin-top: $ruler * 3; // Etwas Abstand nach oben
+  text-align: center;
+  
+  // Wende die Neumorphism-Textstile an
+  color: $color-shadow;
+  text-shadow: 1px 1px 1px $color-white;
+  
+  // Footer-Text ist oft etwas kleiner
+  font-size: $ruler * 0.9; // 14.4px
+  letter-spacing: -0.2px;
+
+  // Stile für Links im Footer (z.B. GitHub-Link)
+  a {
+    color: #61677C; // Die Textfarbe vom Button von vorhin
+    font-weight: 600;
+    text-decoration: none;
+    margin: 0 calc($ruler / 4); // 4px Abstand
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
