@@ -1,0 +1,73 @@
+// src/components/Header/Header.module.scss
+
+// Importiere die globalen Variablen
+@import 'varibles'; // Pfad anpassen, falls _variables.scss woanders liegt!
+
+.header {
+  width: 100%;
+  padding: $ruler; // 16px rundherum
+  background-color: $color-bg;
+  display: flex;
+  justify-content: space-between; // Elemente an den Enden verteilen
+  align-items: center; // Vertikal zentrieren
+
+  // Neumorphism-Schatten für den Header
+  box-shadow: -5px -5px 20px $color-white, 5px 5px 20px $color-shadow;
+  border-radius: $ruler * 2; // Leichte Rundung, passend zum Stil
+  margin-bottom: $ruler * 2; // Abstand zum Inhalt darunter
+
+  // Grundschriftstil für den Header-Text
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: -0.2px;
+  font-size: $ruler;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center; // Vertikal zentrieren, falls Text und Bild im Logo-Bereich
+  height: $ruler * 3; // Feste Höhe für den Logo-Bereich
+
+  img {
+    height: 10px; // Bild füllt den Container
+    width: 50%; // Seitenverhältnis beibehalten
+    // Leichte Schatten, passend zum Neumorphism
+    box-shadow: inset 2px 2px 5px $color-shadow, inset -5px -5px 10px $color-white;
+    border-radius: 50%; // Für ein rundes Logo, oder $ruler/2 für abgerundete Ecken
+    padding: $ruler / 4; // Etwas padding im Bild
+    background-color: $color-bg; // Hintergrundfarbe für das Logo
+  }
+
+  // Falls du Text neben dem Logo hast
+  span {
+    margin-left: $ruler / 2;
+    font-weight: bold;
+    color: $color-shadow;
+    text-shadow: 1px 1px 1px $color-white;
+    font-size: $ruler * 1.2; // Etwas größerer Text
+  }
+}
+
+.navigation {
+  // Hier könnten später Navigationslinks oder ein Burger-Menü rein
+  // Zum Beispiel für Home, About, Contact
+  a {
+    margin-left: $ruler;
+    text-decoration: none;
+    color: #61677C; // Ähnlich wie Button-Text
+    font-weight: 600;
+    
+    &:hover {
+      text-shadow: 1px 1px 2px $color-shadow, -1px -1px 2px $color-white;
+    }
+  }
+}
+
+// Optional: Für einen Titel in der Mitte (falls gewünscht)
+.title {
+    flex-grow: 1; // Nimmt den restlichen Platz ein
+    text-align: center;
+    color: $color-shadow;
+    text-shadow: 1px 1px 1px $color-white;
+    font-size: $ruler * 1.5; // Größerer Titel
+    font-weight: bold;
+}
