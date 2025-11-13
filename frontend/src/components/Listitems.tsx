@@ -1,10 +1,10 @@
 // src/components/Listitems.tsx
 
 import React from 'react';
-import type { IncidentData } from '../domain/Incident'; // Pfad ggf. anpassen!
+import type { IncidentData } from '../domain/Incident'; 
 
-// 1. ÄNDERUNG: Importiere die globale SCSS-Datei
-import '../styles/Listitems.css'; // Pfad anpassen! (z.B. '../styles/Listitems.scss')
+
+import '../styles/Listitems.css'; 
 
 interface ListitemsProps {
   item: IncidentData;
@@ -12,7 +12,7 @@ interface ListitemsProps {
 
 export const Listitems: React.FC<ListitemsProps> = ({ item }) => {
 
-  const formattedDate = new Date(item.date).toLocaleDateString('de-DE', {
+  const formattedDate = new Date(item.date ?? Date.now()).toLocaleDateString('de-DE', {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
@@ -20,7 +20,7 @@ export const Listitems: React.FC<ListitemsProps> = ({ item }) => {
     minute: '2-digit'
   });
 
-  // 2. ÄNDERUNG: Verwende 'className' mit Strings statt 'styles.card'
+
   return (
     <div className="card"> 
       
