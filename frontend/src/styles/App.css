@@ -1,0 +1,52 @@
+/* src/styles/App.css */
+
+/* 1. Deine Frutiger Aero-Variablen und Body-Stile */
+:root {
+  --fa-sky-blue: #00bfff;
+  --fa-lime-green: #32cd32;
+  --fa-white: #ffffff;
+  --fa-text-dark: #333;
+  --fa-glass-bg: rgba(255, 255, 255, 0.3);
+  --fa-glass-border: rgba(255, 255, 255, 0.5);
+  --font-main: 'Segoe UI', 'Frutiger', 'Tahoma', 'Verdana', sans-serif;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-main);
+  color: var(--fa-text-dark);
+  
+  
+  /* Dein Hintergrundbild */
+  background-image: url('../../public/aero-background.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/*
+ * 2. DER LAYOUT-FIX
+ */
+
+/* Dieser Container umspannt deine ganze App */
+.app-container {
+  display: flex;
+  flex-direction: column; /* Stapelt Header, Main, Footer vertikal */
+  min-height: 100vh;     /* Zwingt die App, 100% der Bildschirmhöhe zu sein */
+}
+
+/* Dieses Element (dein <main>-Tag) wächst */
+.main-content {
+  /* * Dies ist der wichtigste Befehl:
+   * 'flex-grow: 1' sagt dem Inhalt, dass er allen 
+   * verfügbaren Platz einnehmen soll.
+   * Das schiebt den Footer automatisch nach unten.
+   */
+  flex-grow: 1; 
+  display: flex;
+  flex-direction:  column;
+  justify-content: center;
+  align-items: center;
+}

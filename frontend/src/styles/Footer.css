@@ -1,0 +1,71 @@
+
+.header {
+  /* Layout: Flexbox, um Elemente (Logo, Titel) zu verteilen */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  /* Positionierung: Oben auf der Seite */
+  width: 95%; /* Nicht 100%, damit es "schwebt" */
+  margin: 16px auto; /* Oben/Unten 16px, Auto links/rechts zum Zentrieren */
+  padding: 12px 24px;
+  box-sizing: border-box;
+
+  /*
+   * Frutiger Aero Glas-Effekt
+   */
+  background: var(--fa-glass-bg);
+  border: 1px solid var(--fa-glass-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 20px; /* Schön abgerundet */
+}
+
+/* Titel in der Mitte (aus deiner Header.tsx) */
+.title {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--fa-white);
+  /* Starker Textschatten für Lesbarkeit */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Logo-Container auf der rechten Seite */
+.logo-container {
+  display: flex;
+  align-items: center;
+  height: 10px; /* Feste Höhe für das Logo */
+}
+
+.logo-container img {
+  height: 100%;
+  width: auto;
+  
+  /* Skeuomorpher "Gel"-Look für das Logo */
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 50%; /* Rundes Logo */
+  padding: 4px; /* Kleiner Rand ums Logo */
+  box-sizing: border-box;
+  /* Glanz-Effekt */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 
+              inset 0 1px 1px rgba(255, 255, 255, 0.8);
+}
+
+/* Navigationslinks (falls du welche links hast) */
+.navigation a {
+  margin-right: 16px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--fa-text-dark); /* Dunkler Text auf dem Glas */
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.navigation a:hover {
+  color: var(--fa-sky-blue);
+  text-decoration: underline;
+}
+

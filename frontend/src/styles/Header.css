@@ -1,0 +1,57 @@
+/* src/styles/Header.css */
+
+/* * 1. Der Header-Container
+ * Wir machen ihn zum Flex-Container, um Logo und Titel nebeneinander zu bekommen.
+ */
+.header {
+  display: flex;
+  justify-content: center; /* Zentriert den Inhalt horizontal */
+  align-items: center;   /* Zentriert den Inhalt vertikal */
+  gap: 12px;               /* Abstand zwischen Logo und Titel */
+  
+  /* Dein Frutiger Aero Glas-Stil */
+  width: 95%;
+  margin: 16px auto;
+  padding: 12px 24px;
+  box-sizing: border-box;
+  background: var(--fa-glass-bg);
+  border: 1px solid var(--fa-glass-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+}
+
+/* * 2. Das Logo (dein .logo)
+ * Hier ist der Fix für die Größe!
+ */
+.logo {
+  height: 36px; /* Setze die Höhe auf einen kleinen Wert */
+  width: auto;  /* Breite passt sich automatisch an */
+  
+  /* Der "Gel"-Look */
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  padding: 4px;
+  box-sizing: border-box; /* Wichtig: Padding wird in die 36px eingerechnet */
+  
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 
+              inset 0 1px 1px rgba(255, 255, 255, 0.8);
+}
+
+/* * 3. Der Titel (dein .title)
+ */
+.title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--fa-white);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  margin: 0; /* Entfernt Standard-Rand des h1-Tags */
+}
+
+/* Optional: Dein .header-note */
+.header-note {
+  font-size: 0.9rem;
+  color: var(--fa-text-dark);
+  margin-left: auto; /* Schiebt die Note (falls vorhanden) nach ganz rechts */
+}

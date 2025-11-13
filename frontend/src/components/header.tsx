@@ -1,4 +1,4 @@
-import '../styles/Header.scss'
+import '../styles/Header.css'
 import logo from '../assets/road_runner.svg'
 
 export interface HaederNoteProps {

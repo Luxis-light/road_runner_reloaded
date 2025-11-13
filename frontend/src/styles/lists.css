@@ -1,0 +1,62 @@
+/* src/styles/Lists.css */
+
+/* Der Haupt-Container, der die Liste umgibt */
+.list-container {
+  width: 100%;
+  max-width: 900px; /* Maximale Breite für Lesbarkeit */
+  margin: 32px auto; /* Zentriert mit Abstand */
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+/* Der Titel über der Liste */
+.list-container h2 {
+  font-size: 2.5rem; /* Großer, wichtiger Titel */
+  font-weight: 700;
+  text-align: center;
+  color: var(--fa-white);
+  
+  /* * Starker Text-Schatten, um den Text vom 
+   * bunten Hintergrundbild abzuheben.
+   */
+  text-shadow: 2px 3px 5px rgba(0, 0, 0, 0.5), 
+               0 0 1px rgba(0, 0, 0, 0.5); /* Schärfere Kante */
+  
+  margin-bottom: 32px;
+}
+
+/* * Styling für den Ladezustand und Fehlerzustand.
+ * Wir machen sie zu "Glas"-Karten, damit sie 
+ * zum Rest des UI-Designs passen.
+ */
+.loading-state,
+.error-state {
+  /* Layout */
+  padding: 48px 24px;
+  text-align: center;
+  max-width: 600px;
+  margin: 48px auto; /* Zentriert */
+  
+  /* Frutiger Aero Glas-Effekt */
+  background: var(--fa-glass-bg);
+  border: 1px solid var(--fa-glass-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  
+  /* Text-Stil */
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* Spezifische Textfarben */
+.loading-state {
+  color: var(--fa-text-dark); /* Dunkler Text auf hellem Glas */
+}
+
+.error-state {
+  color: #D8000C; /* Kräftiges Rot für Fehler */
+  /* Der Hintergrund wird leicht rötlich eingefärbt */
+  background: rgba(255, 210, 210, 0.3);
+}

@@ -1,0 +1,116 @@
+/* src/styles/Login.css */
+
+/* Das Haupt-Formular als Glas-Panel */
+.login-form {
+  /* Verwende die Glas-Variablen */
+  background: var(--fa-glass-bg);
+  border: 1px solid var(--fa-glass-border);
+  
+  /* Der "magische" Unschärfe-Effekt */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); /* Für Safari */
+
+  /* Schöner Schatten und Abrundung */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  
+  /* Layout (ähnlich wie vorher) */
+  width: 320px;
+  padding: 24px;
+  margin: 64px auto;
+}
+
+.login-form h2 {
+  text-align: center;
+  color: var(--fa-white);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--fa-text-dark); /* Dunkler Text auf dem hellen Glas */
+  font-weight: 600;
+}
+
+/* * Der Input-Stil: 
+ * Ähnlich wie das Formular, aber "eingelassen"
+ */
+.input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid var(--fa-glass-border);
+  background: rgba(255, 255, 255, 0.5); /* Etwas deckender */
+  border-radius: 8px;
+  box-sizing: border-box; /* Wichtig für 100% Breite */
+  color: var(--fa-text-dark);
+  
+  /* Kleiner "Inset"-Schatten */
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.input:focus {
+  outline: 2px solid var(--fa-sky-blue);
+  background: var(--fa-white);
+}
+
+/* * Der Button: Ein "Gel"-Button!
+ * Das ist der Kern von Frutiger Aero.
+ */
+.button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--fa-white);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  
+  /* Der Glanz-Effekt: ein Farbverlauf */
+  background: linear-gradient(to bottom, var(--fa-lime-green) 0%, #28a745 100%);
+  
+  border: 1px solid #28a745;
+  border-radius: 20px; /* Abgerundet */
+  cursor: pointer;
+  
+  /* Ein subtiler Glanz-Schatten oben und ein "Pop"-Schatten unten */
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2), 
+              inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  /* Beim Hovern heller werden */
+  background: linear-gradient(to bottom, #32cd32 0%, #2ebf4e 100%);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25), 
+              inset 0 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+.button:active {
+  /* Beim Drücken "eindrücken" */
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Fehler- und Erfolgsnachrichten */
+.error {
+  color: #D8000C;
+  background-color: #FFD2D2;
+  font-weight: 600;
+  text-align: center;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.success {
+  color: #270;
+  background-color: #DFF2BF;
+  font-weight: 600;
+  text-align: center;
+  padding: 8px;
+  border-radius: 8px;
+}
