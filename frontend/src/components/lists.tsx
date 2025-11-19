@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
-// Importiere die Kind-Komponente
+
 import { Listitems } from './Listitems'; 
-// Importiere die Typen
+
 import type { IncidentData } from '../domain/Incident';
 import { fetchIncidents } from '../domain/API';
 
-// === SCHRITT 1: Importiere die neue SCSS-Datei ===
-import '../styles/lists.css'; // Pfad ggf. anpassen!
+
+import '../styles/lists.css'; 
 
 export const Lists: React.FC = () => {
   
@@ -30,19 +30,19 @@ export const Lists: React.FC = () => {
     loadData();
   }, []);
 
-  // === SCHRITT 2: Füge die neuen Klassen hinzu ===
+
   
   if (isLoading) {
-    // Verwende die .loading-state Klasse
+ 
     return <div className="loading-state">Lade Incidents...</div>;
   }
 
   if (error) {
-    // Verwende die .error-state Klasse
+  
     return <div className="error-state">Fehler: {error.message}</div>;
   }
 
-  // (Dieser Teil bleibt gleich)
+
   return (
     <div className="list-container">
       <h2>Gemeldete Vorfälle</h2>

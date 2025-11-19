@@ -1,5 +1,3 @@
-// src/components/Listitems.tsx
-
 import React from 'react';
 import type { IncidentData } from '../domain/Incident';
 import '../styles/Listitems.css';
@@ -10,10 +8,8 @@ interface ListitemsProps {
 
 export const Listitems: React.FC<ListitemsProps> = ({ item }) => {
   
-  // Basis-URL definieren
   const imageBaseUrl = "http://141.45.191.149:7777/bikelin/api/incident/image";
   
-  // Die Bedingung: Wahr, wenn Bilder existieren UND das Array nicht leer ist
   const hasImages = item.images && item.images.length > 0;
 
   return (

@@ -9,7 +9,7 @@
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   border-radius: 16px;
   
-  /* Layout */
+
   max-width: 600px;
   margin: 24px auto;
   padding: 24px;
@@ -28,13 +28,13 @@
 .header h3 {
   margin: 0;
   font-size: 1.8rem;
-  color: var(--fa-text-dark); /* Dunklerer Titel auf der Karte */
-  text-shadow: none; /* Kein Schatten auf der Karte nötig */
+  color: var(--fa-text-dark); 
+  text-shadow: none; 
 }
 
 .description {
   font-size: 1rem;
-  color: #444; /* Etwas dunklerer Text */
+  color: #444; 
   margin-bottom: 20px;
 }
 
@@ -48,9 +48,7 @@
   color: #222;
 }
 
-/* * Der Karten-Stil für die Kategorie 
- * (z.B. "good" oder "bad")
- */
+
 .category {
   font-size: 0.8rem;
   font-weight: bold;
@@ -68,13 +66,11 @@
   background: linear-gradient(to right, #ff416c, #ff4b2b);
 }
 
-/* * Die eingebettete Karte 
- * (wird jetzt in einen glatten Container gepackt)
- */
+
 .map-wrapper {
   border-radius: 12px;
   margin: 16px 0;
-  overflow: hidden; /* Stellt sicher, dass die Karte die Ecken hat */
+  overflow: hidden; 
   border: 1px solid var(--fa-glass-border);
   box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
@@ -86,8 +82,14 @@
 
 .images {
   margin-top: 16px;
+  font-weight: bolder;
+  
 }
 
+.images :hover{
+  cursor: pointer;
+  transform: scale(1.05);
+  transition: transform 0.3s ease;}
 .images img {
   width: 100%;
   height: auto;
