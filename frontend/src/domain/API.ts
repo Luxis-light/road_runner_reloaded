@@ -12,7 +12,7 @@ const API_URL = 'http://141.45.191.149:7777/bikelin/api';
 export const fetchIncidents = async (): Promise<IncidentData[]> => {
   
   // Sende die Anfrage an den Endpunkt
-  const response = await fetch(`${API_URL}/incident`);
+  const response = await fetch(`${API_URL}/incidents`);
 
   // Fehlerbehandlung: Wenn Status nicht 200-299 ist (z.B. 404, 500)
   if (!response.ok) {
@@ -25,16 +25,3 @@ export const fetchIncidents = async (): Promise<IncidentData[]> => {
   return data;
 };
 
-/*
-// Beispiel: So könntest du auch eine Funktion für *ein* Item hinzufügen
-export const fetchIncidentById = async (id: string): Promise<IncidentData> => {
-  const response = await fetch(`${API_URL}/incident/${id}`);
-  
-  if (!response.ok) {
-    throw new Error(`HTTP-Fehler beim Abrufen von Incident ${id}! Status: ${response.status}`);
-  }
-  
-  const data = await response.json() as IncidentData;
-  return data;
-};
-*/
