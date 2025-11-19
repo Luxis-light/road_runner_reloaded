@@ -25,16 +25,3 @@ export const fetchIncidents = async (): Promise<IncidentData[]> => {
   return data;
 };
 
-/*
-// Beispiel: So könntest du auch eine Funktion für *ein* Item hinzufügen
-export const fetchIncidentById = async (id: string): Promise<IncidentData> => {
-  const response = await fetch(`${API_URL}/incident/${id}`);
-  
-  if (!response.ok) {
-    throw new Error(`HTTP-Fehler beim Abrufen von Incident ${id}! Status: ${response.status}`);
-  }
-  
-  const data = await response.json() as IncidentData;
-  return data;
-};
-*/

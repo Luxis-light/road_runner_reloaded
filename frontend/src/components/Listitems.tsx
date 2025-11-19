@@ -11,40 +11,25 @@ interface ListitemsProps {
 }
 
 export const Listitems: React.FC<ListitemsProps> = ({ item }) => {
+  // ... date formatting logic
 
-  const formattedDate = new Date(item.date ?? Date.now()).toLocaleDateString('de-DE', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
-
+  // Wir bauen die Basis-URL für Bilder
+  // Laut API-Doku: http://141.45.191.149:7777/bikelin/api/incident/image/
+  const imageBaseUrl = "http://141.45.191.149:7777/bikelin/api/incident/image";
 
   return (
     <div className="card"> 
-      
-      <div className="header">
-        <h3>{item.title}</h3>
-        {/* Wir setzen hier zwei Klassen dynamisch zusammen */}
-        <span className={`category ${item.category}`}>
-          {item.category}
-        </span>
-      </div>
-
-      <p className="description">{item.description}</p>
-      
-      <div className="details">
-        <p><strong>Wo:</strong> {item.street}, {item.zip} {item.city}</p>
-        <p><strong>Gefahr:</strong> {item.danger}</p>
-        <p><strong>Gemeldet:</strong> {formattedDate} von <strong>{item.user}</strong></p>
-      </div>
-
+      {/* KORREKTUR DES BILD-PFADES */}
       {item.images && item.images.length > 0 && (
         <div className="images">
           <img 
-            src={`http://141.45.191.149:7777/bikelin/api/image/${item.images[0].image}`} 
+            // Hier fehlte das '/incident' im Pfad
+            src={`${imageBaseUrl}/${item.images[0].image}`} 
             alt={item.title} 
+            // Optional: Error Handling für Bilder hinzufügen
+            onError={(e) => {
+              (e.target as HTMLImageElement).style.display = 'none';
+            }}
           />
         </div>
       )}

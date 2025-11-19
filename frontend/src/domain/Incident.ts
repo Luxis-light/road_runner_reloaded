@@ -27,26 +27,19 @@ export interface IncidentData {
   description?: string; // '?' bedeutet optional (nicht 'required' im Schema)
   latitude: number;
   longitude: number;
-  street?: string;
-  city?: string;
-  zip?: number;
-  country?: string;
-  category?: string;
-  rating?: number;
-  severity?: string;
-  timeframe?: string; // (Dein Schema sagt 'timeframe', nicht 'timeFrame')
-  date?: number;
-  
-  // Es ist ein Array von OBJEKTEN, nicht nur strings
-  tags: IncidentTag[]; 
-  
-  // Es ist ein Array von OBJEKTEN, nicht ein leeres Array
-  images: IncidentImage[];
-  
-  // 'user' ist im Schema ein String (die User-ID)
-  user: string; 
-  
-  
-  danger: DangerLevel; // (oder 'string', wenn du die Enums nicht willst)
-  time_category: TimeCategory; // (oder 'string')
+  latitude: number;
+  date: number; 
+  category: string;
+  description: string;
+  street: string;
+  zip: number;
+  city: string;
+  country: string;
+  user: string;
+  danger: string;
+  time_category: string;
+  tags: string[]; // Annahme: ist ein Array von Strings
+  images: IncidentImage[]; // Verwendet den oben definierten Typ
+  incident_id: number;
+  __v: number; // Dies ist oft eine Versionsnummer von der Datenbank (z.B. Mongoose)
 }

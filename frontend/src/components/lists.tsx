@@ -7,7 +7,7 @@ import type { IncidentData } from '../domain/Incident';
 import { fetchIncidents } from '../domain/API';
 
 // === SCHRITT 1: Importiere die neue SCSS-Datei ===
-import '../styles/Lists.css'; // Pfad ggf. anpassen!
+import '../styles/lists.css'; // Pfad ggf. anpassen!
 
 export const Lists: React.FC = () => {
   
