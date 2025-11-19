@@ -19,16 +19,14 @@ body, html {
   
   
   /* Dein Hintergrundbild */
-  background-image: url('../../public/aero-background.png');
+  background-image: url('../../public/asadal_stock_58.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
   min-height: 100vh;
 }
 
-/*
- * 2. DER LAYOUT-FIX
- */
+
 
 /* Dieser Container umspannt deine ganze App */
 .app-container {

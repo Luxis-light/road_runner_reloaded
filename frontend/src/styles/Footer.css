@@ -1,5 +1,5 @@
 
-.header {
+.footer {
   /* Layout: Flexbox, um Elemente (Logo, Titel) zu verteilen */
   display: flex;
   justify-content: space-between;

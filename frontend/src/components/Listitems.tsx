@@ -1,38 +1,54 @@
 // src/components/Listitems.tsx
 
 import React from 'react';
-import type { IncidentData } from '../domain/Incident'; 
-
-
-import '../styles/Listitems.css'; 
+import type { IncidentData } from '../domain/Incident';
+import '../styles/Listitems.css';
 
 interface ListitemsProps {
   item: IncidentData;
 }
 
 export const Listitems: React.FC<ListitemsProps> = ({ item }) => {
-  // ... date formatting logic
-
-  // Wir bauen die Basis-URL für Bilder
-  // Laut API-Doku: http://141.45.191.149:7777/bikelin/api/incident/image/
+  
+  // Basis-URL definieren
   const imageBaseUrl = "http://141.45.191.149:7777/bikelin/api/incident/image";
+  
+  // Die Bedingung: Wahr, wenn Bilder existieren UND das Array nicht leer ist
+  const hasImages = item.images && item.images.length > 0;
 
   return (
     <div className="card"> 
-      {/* KORREKTUR DES BILD-PFADES */}
-      {item.images && item.images.length > 0 && (
+      
+      <div className="header">
+        <h3>{item.title}</h3>
+        <span className={`category ${item.category}`}>
+          {item.category}
+        </span>
+      </div>
+
+      <p className="description">{item.description}</p>
+      
+      <div className="details">
+        <p><strong>Wo:</strong> {item.street}, {item.zip} {item.city}</p>
+        <p><strong>Gefahr:</strong> {item.danger}</p>
+        <p><strong>Gemeldet von:</strong> <strong>{item.user}</strong></p>
+      </div>
+      
+      {hasImages ? (
         <div className="images">
           <img 
-            // Hier fehlte das '/incident' im Pfad
             src={`${imageBaseUrl}/${item.images[0].image}`} 
             alt={item.title} 
-            // Optional: Error Handling für Bilder hinzufügen
             onError={(e) => {
               (e.target as HTMLImageElement).style.display = 'none';
             }}
           />
         </div>
-      )}
+      ) : (
+        <div className="images">
+           Kein Bild vorhanden
+        </div>
+      )} 
     </div>
   );
 };
