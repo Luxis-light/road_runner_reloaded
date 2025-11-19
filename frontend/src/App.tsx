@@ -3,7 +3,8 @@
 import './styles/App.css'; // WICHTIG: Importiere die App.css
 import { Header } from './components/header';
 import { Footer } from './components/footer';
-import type { Lists } from './components/lists'; // Beispiel-Inhalt
+import { Lists } from './components/lists'; 
+
 // import { Login } from './components/Login';
 
 function App() {
@@ -17,8 +18,8 @@ function App() {
              Dieses Element wird "wachsen". */}
       <main className="main-content">
         
-        {/* Hier kommt dein Seiteninhalt rein, z.B. die Liste */}
-        
+        {}
+        <Lists/>
         {/* <Login /> */}
         
       </main>

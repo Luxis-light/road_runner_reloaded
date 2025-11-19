@@ -12,7 +12,7 @@ export interface IncidentData {
   title: string;
   longitude: number;
   latitude: number;
-  date: number; // Dies ist ein Unix-Timestamp (in Millisekunden)
+  date: number; 
   category: string;
   description: string;
   street: string;
