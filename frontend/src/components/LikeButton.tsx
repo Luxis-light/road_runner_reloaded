@@ -16,7 +16,7 @@ export const Counter = function({count, countChangeFunc}: CounterProps){
 
     return (
 		<>
-	<button onClick={incrementCounters}><span>👍</span></button>
+	<button onClick={incrementCounters} className="like-button"><span>👍</span></button>
 	<br/>
 	{ likeCount > 0 && <span>This item was liked {likeCount} times. </span>}
 	</>
