@@ -1,17 +1,24 @@
 
 import { useState } from "react";
 
-export const Counter = function(){
-    const [count, setCount] = useState(0);
+export interface CounterProps {
+    count: number;
+    countChangeFunc: (newCount: number) => void;
+}
 
-    const increment = function(){
-        setCount(count + 1);
+export const Counter = function({count, countChangeFunc}: CounterProps){
+    const [likeCount, setLikeCount] = useState(count);
 
-    };
+    const incrementCounters = function() {
+		setLikeCount(likeCount + 1);
+		countChangeFunc(count + 1); 
+    };  
 
-    return(
-        <button onClick={increment}>
-            {'Like: ${count}'}
-        </button>
-    )
+    return (
+		<>
+	<button onClick={incrementCounters}><span>👍</span></button>
+	<br/>
+	{ likeCount > 0 && <span>This item was liked {likeCount} times. </span>}
+	</>
+	);
 }

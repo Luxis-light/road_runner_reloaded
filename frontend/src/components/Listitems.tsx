@@ -1,6 +1,11 @@
+// src/components/Listitems.tsx
 import React from 'react';
-import type { IncidentData } from '../domain/Incident';
-import '../styles/Listitems.css';
+import { useState } from 'react'
+import type { IncidentData } from '../domain/Incident'; // Pfad ggf. anpassen!
+import { Counter } from './LikeButton';
+
+// 1. ÄNDERUNG: Importiere die globale SCSS-Datei
+import '../styles/Listitems.css'; // Pfad anpassen! (z.B. '../styles/Listitems.scss')
 
 interface ListitemsProps {
   item: IncidentData;
@@ -9,6 +14,7 @@ interface ListitemsProps {
 export const Listitems: React.FC<ListitemsProps> = ({ item }) => {
   
   const imageBaseUrl = "http://141.45.191.149:7777/bikelin/api/incident/image";
+  const [count, setCount] = useState(0);
   
   const hasImages = item.images && item.images.length > 0;
 
@@ -39,6 +45,7 @@ export const Listitems: React.FC<ListitemsProps> = ({ item }) => {
               (e.target as HTMLImageElement).style.display = 'none';
             }}
           />
+          <Counter count={count} countChangeFunc={setCount}/>
         </div>
       ) : (
         <div className="images">
