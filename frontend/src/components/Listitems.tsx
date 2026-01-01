@@ -4,8 +4,7 @@ import { useState } from 'react'
 import type { IncidentData } from '../domain/Incident'; // Pfad ggf. anpassen!
 import { Counter } from './LikeButton';
 
-// 1. ÄNDERUNG: Importiere die globale SCSS-Datei
-import '../styles/Listitems.css'; // Pfad anpassen! (z.B. '../styles/Listitems.scss')
+import '../styles/Listitems.css'; 
 
 interface ListitemsProps {
   item: IncidentData;

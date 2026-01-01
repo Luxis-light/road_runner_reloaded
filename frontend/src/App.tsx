@@ -1,50 +1,48 @@
 // src/App.tsx
-import './styles/App.css'; // WICHTIG: Importiere die App.css
+import './styles/App.css';
 import { Header } from './components/header';
 import { Footer } from './components/footer';
 import { Lists } from './components/lists'; 
-import useUserContext, { UserContext, UserContextProvider } from "./components/UserContext";
-import { useContext } from 'react';
+import { UserContextProvider } from "./components/UserContext"; 
+import useUserContext from "./components/UserContext";
+import { Login } from './components/Login'; // Importiere deine Login-Komponente
 
-// import { Login } from './components/Login';
+const MainContent = () => {
+  const { user } = useUserContext();
+
+  if (!user) {
+    return <Login />;
+  }
+
+  // WICHTIG: Zugriffspfad an das API-Schema anpassen
+  // Schema: { UserResponse: { user: { username: "..." } } }
+  const username = user.UserResponse?.user?.username || "Benutzer";
+
+  return (
+    <>
+      <div className="welcome-message" style={{ textAlign: 'center', margin: '1rem' }}>
+        <h3>Willkommen, {username}!</h3>
+      </div>
+      <Lists />
+    </>
+  );
+};
 
 function App() {
   return (
-    // 1. Dieser Container steuert das gesamte Seitenlayout
     <div className="app-container"> 
-      
       <Header headerNote="" />
       
-      {/* 2. Ein <main>-Tag für deinen Inhalt. 
-             Dieses Element wird "wachsen". */}
       <main className="main-content">
-        
-        {}
-        <Lists/>
-        {/* <Login /> */}
+        {/* 2. Der Provider umschließt jetzt den gesamten wechselbaren Bereich */}
         <UserContextProvider>
-          <Page />
+          <MainContent />
         </UserContextProvider>
-        
       </main>
       
       <Footer footerNote="" />
-    
     </div>
-    
   );
 }
-
-const Page = () => {
-  // access the context value
-  const user = useUserContext();
-
-  if (user?.login?.username) {
-    return <p>You are logged in as {user?.login.username}</p>;
-  } else {
-    return <p>You are not logged in</p>;
-  }
-};
-
 
 export default App;

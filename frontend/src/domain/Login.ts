@@ -5,7 +5,7 @@ export async function login(username: string, userPassword: string): Promise<str
             "Content-Type": "application/json",
         },
         body: JSON.stringify({ 
-            UserCredits: {
+            UserCreds: {
                 username: username,
                 password: userPassword
             }
