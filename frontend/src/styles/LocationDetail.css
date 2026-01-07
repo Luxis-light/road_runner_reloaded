@@ -1,0 +1,71 @@
+
+.detail-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+
+.nav-back-wrapper {
+  margin-bottom: 20px;
+}
+
+.back-link {
+  text-decoration: none;
+  display: inline-block;
+  width: auto; 
+}
+
+.detail-card {
+  cursor: default; 
+}
+
+.detail-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+}
+
+.detail-content {
+  font-size: 1.1rem;
+  margin-top: 20px;
+}
+
+.detail-separator {
+  margin: 15px 0;
+  border: 0;
+  border-top: 1px solid #ccc;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+@media (max-width: 600px) {
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.action-buttons {
+  margin-top: 30px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.button-auto {
+  width: auto !important;
+}
+
+.button-delete {
+  background: #d9534f;
+  border-color: #d43f3a;
+}
+
+.button-delete:hover {
+  background: #c9302c;
+}

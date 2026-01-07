@@ -1,47 +1,80 @@
-// src/App.tsx
+
 import './styles/App.css';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { Header } from './components/header';
 import { Footer } from './components/footer';
-import { Lists } from './components/lists'; 
-import { UserContextProvider } from "./components/UserContext"; 
+import { Lists } from './components/lists';
+import { Login } from './components/Login';
+import { AddIncident } from './components/AddIncident';
+import { UserContextProvider } from "./components/UserContext";
 import useUserContext from "./components/UserContext";
-import { Login } from './components/Login'; // Importiere deine Login-Komponente
+import { About, ErrorPage} from './components/Placeholder';
+import { LocationDetail } from './components/LocationDetail';
+import { MapComponent } from './components/Map'; // Importieren
 
-const MainContent = () => {
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user } = useUserContext();
-
   if (!user) {
     return <Login />;
   }
+  return <>{children}</>; 
+};
 
-  // WICHTIG: Zugriffspfad an das API-Schema anpassen
-  // Schema: { UserResponse: { user: { username: "..." } } }
-  const username = user.UserResponse?.user?.username || "Benutzer";
+const AppContent = () => {
+  const { user } = useUserContext();
+  const navigate = useNavigate();
 
   return (
-    <>
-      <div className="welcome-message" style={{ textAlign: 'center', margin: '1rem' }}>
-        <h3>Willkommen, {username}!</h3>
-      </div>
-      <Lists />
-    </>
+    <div className="app-container">
+      <Header headerNote={user?.UserResponse?.user?.username || ""} />
+
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={user ? <Navigate to="/locations" replace /> : <Login />} />
+          
+          <Route path="/locations" element={
+            <ProtectedRoute>
+              <Lists />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/locations/add" element={
+            <ProtectedRoute>
+              <AddIncident 
+                onCancel={() => navigate('/locations')} 
+                onSuccess={() => navigate('/locations')} 
+              />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/locations/:id" element={
+            <ProtectedRoute>
+              <LocationDetail />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/locations/map" element={
+            <ProtectedRoute>
+            <MapComponent />
+          </ProtectedRoute>
+          } />
+          
+          <Route path="/about" element={<About />} />
+          <Route path="/error" element={<ErrorPage />} />
+          <Route path="*" element={<Navigate to="/error" replace />} />
+        </Routes>
+      </main>
+
+      <Footer footerNote="" />
+    </div>
   );
 };
 
 function App() {
   return (
-    <div className="app-container"> 
-      <Header headerNote="" />
-      
-      <main className="main-content">
-        {/* 2. Der Provider umschließt jetzt den gesamten wechselbaren Bereich */}
-        <UserContextProvider>
-          <MainContent />
-        </UserContextProvider>
-      </main>
-      
-      <Footer footerNote="" />
-    </div>
+    <UserContextProvider>
+      <AppContent />
+    </UserContextProvider>
   );
 }
 
