@@ -8,16 +8,18 @@ export const Logout = () => {
     if (!user) return null;
 
     const buttonStyle: React.CSSProperties = {
-        background: isHover ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.1)',
-        border: '1px solid rgba(255, 255, 255, 0.4)',
-        borderRadius: '12px',
-        color: 'white',
-        padding: '4px 12px',
+        background: 'transparent', 
+        border: 'none',            
+        padding: '0',                
+        color: isHover ? '#ff7777' : '#ff4444',
         cursor: 'pointer',
-        fontSize: '0.9em',
-        transition: 'all 0.2s ease',
-        marginLeft: '5px',
-        backdropFilter: 'blur(4px)'
+        fontSize: '1rem',            
+        fontWeight: 500,            
+        fontFamily: 'inherit',  
+        textDecoration: 'none',      
+        display: 'flex',              
+        alignItems: 'center',
+        transition: 'color 0.2s ease' 
     };
 
     return (
@@ -28,7 +30,7 @@ export const Logout = () => {
             onMouseLeave={() => setIsHover(false)}
             title="Abmelden"
         >
-            Logout ↪
+            Logout
         </button>
     );
 };
