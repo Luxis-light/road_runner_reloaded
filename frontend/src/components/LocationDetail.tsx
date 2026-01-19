@@ -58,8 +58,8 @@ export const LocationDetail: React.FC = () => {
     <div className="list-container detail-container">
       
       <div className="nav-back-wrapper">
-        <Link to="/locations" className="button secondary back-link">
-          Zurück zur Liste
+        <Link to="/locations" className="back-link">
+          Zurück
         </Link>
       </div>
 
