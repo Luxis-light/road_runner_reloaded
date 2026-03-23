@@ -69,7 +69,7 @@ export const createIncident = async (
     method: "POST",
     headers: {
       "Authorization": `Bearer ${token}`,
-      // KEIN Content-Type Header setzen! Das macht der Browser bei FormData automatisch.
+      
     },
     body: formData,
   });
@@ -89,4 +89,31 @@ export const fetchIncidentById = async (id: string): Promise<IncidentData> => {
   }
 
   return response.json();
+};
+
+
+export const updateIncident = async (
+  updateData: IncidentData, 
+  token: string
+): Promise<void> => { 
+
+  const formData = new FormData();
+ 
+  formData.append("incident", JSON.stringify(updateData));
+
+  
+  const response = await fetch(`${API_URL}/incident/update`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      
+    },
+    body: formData
+  });
+
+  if (!response.ok) {
+    throw new Error(`Fehler beim Aktualisieren des Incidents: ${response.status}`);
+  }
+  
+ 
 };

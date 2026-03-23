@@ -1,4 +1,3 @@
-
 import './styles/App.css';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { Header } from './components/header';
@@ -8,10 +7,10 @@ import { Login } from './components/Login';
 import { AddIncident } from './components/AddIncident';
 import { UserContextProvider } from "./components/UserContext";
 import useUserContext from "./components/UserContext";
-import { About, ErrorPage} from './components/Placeholder';
+import { About, ErrorPage } from './components/Placeholder';
 import { LocationDetail } from './components/LocationDetail';
-import { MapComponent } from './components/Map'; // Importieren
-
+import { MapComponent } from './components/Map';
+import { EditLocation } from './components/EditLocation';
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user } = useUserContext();
   if (!user) {
@@ -50,6 +49,13 @@ const AppContent = () => {
           <Route path="/locations/:id" element={
             <ProtectedRoute>
               <LocationDetail />
+            </ProtectedRoute>
+          } />
+
+          
+          <Route path="/locations/:id/edit" element={
+            <ProtectedRoute>
+              <EditLocation />
             </ProtectedRoute>
           } />
 

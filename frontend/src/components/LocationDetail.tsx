@@ -102,8 +102,12 @@ export const LocationDetail: React.FC = () => {
               Löschen
             </button>
             
-            <button className="button button-auto" disabled>
-              Bearbeiten (Bald verfügbar)
+            <button 
+              className="button button-auto" 
+              
+              onClick={() => navigate(`/locations/${id}/edit`)}
+            >
+              Bearbeiten
             </button>
           </div>
         )}

@@ -1,82 +1,99 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import useUserContext from './UserContext';
-import { createIncident } from '../domain/API';
-import '../styles/AddIncident.css';
+import { fetchIncidentById, updateIncident } from '../domain/API';
+import type { IncidentData } from '../domain/Incident';
+import '../styles/AddIncident.css'; 
 
-interface AddIncidentProps {
-  onCancel: () => void;
-  onSuccess: () => void;
-}
-
-export const AddIncident: React.FC<AddIncidentProps> = ({ onCancel, onSuccess }) => {
+export const EditLocation: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const { user } = useUserContext();
-  
+
+  const [loadingInitial, setLoadingInitial] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // WICHTIG: Wir speichern das komplette Original-Objekt, um es später zu überschreiben
+  const [originalIncident, setOriginalIncident] = useState<IncidentData | null>(null);
+
+  // Formular States
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('bad');
   const [danger, setDanger] = useState('Warning');
   const [street, setStreet] = useState('');
-  const [city, setCity] = useState('Berlin');
-  
-  
-  const [zip, setZip] = useState<string>('10115'); 
-  const [file, setFile] = useState<File | null>(null);
-  
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [zip, setZip] = useState<string>('');
 
-  
+  // Validierungs States
   const [titleError, setTitleError] = useState<string>('');
   const [streetError, setStreetError] = useState<string>('');
   const [zipError, setZipError] = useState<string>('');
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
 
-  
   const hasLetterRegex = /[a-zA-ZäöüÄÖÜß]/;
-  
+
   const validateHasLetter = (value: string): boolean => {
     return hasLetterRegex.test(value);
   };
 
   const validateBerlinZip = (value: string): boolean => {
-    
     if (!/^\d{5}$/.test(value)) return false;
     const zipNum = parseInt(value, 10);
     return zipNum >= 10115 && zipNum <= 14199;
   };
 
- 
+  useEffect(() => {
+    if (!id) return;
+    const loadData = async () => {
+      try {
+        const incident = await fetchIncidentById(id);
+        
+        if (user?.UserResponse?.user?.username !== incident.user) {
+          setError("Keine Berechtigung, diesen Eintrag zu bearbeiten.");
+          setLoadingInitial(false);
+          return;
+        }
+
+        // Gesamtes Objekt speichern
+        setOriginalIncident(incident);
+
+        // Formular befüllen
+        setTitle(incident.title);
+        setDescription(incident.description || '');
+        setCategory(incident.category);
+        setDanger(incident.danger);
+        setStreet(incident.street);
+        setZip(String(incident.zip));
+        
+      } catch (err) {
+        console.error("Fetch Error:", err);
+        setError("Fehler beim Laden der Location-Daten.");
+      } finally {
+        setLoadingInitial(false);
+      }
+    };
+    loadData();
+  }, [id, user]);
+
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setTitle(val);
-    if (!validateHasLetter(val)) {
-      setTitleError('Das Feld muss mindestens einen Buchstaben enthalten.');
-    } else {
-      setTitleError('');
-    }
+    setTitleError(!validateHasLetter(val) ? 'Feld muss mindestens einen Buchstaben enthalten.' : '');
   };
 
   const handleStreetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setStreet(val);
-    if (!validateHasLetter(val)) {
-      setStreetError('Das Feld muss mindestens einen Buchstaben enthalten.');
-    } else {
-      setStreetError('');
-    }
+    setStreetError(!validateHasLetter(val) ? 'Feld muss mindestens einen Buchstaben enthalten.' : '');
   };
 
   const handleZipChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setZip(val);
-    if (!validateBerlinZip(val)) {
-      setZipError('Bitte eine gültige Berliner PLZ (10115-14199) eingeben.');
-    } else {
-      setZipError('');
-    }
+    setZipError(!validateBerlinZip(val) ? 'Bitte eine gültige Berliner PLZ (10115-14199) eingeben.' : '');
   };
 
-  
   useEffect(() => {
     const isValid = 
       title.length > 0 && titleError === '' &&
@@ -89,54 +106,53 @@ export const AddIncident: React.FC<AddIncidentProps> = ({ onCancel, onSuccess })
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!isFormValid) return;
+    if (!isFormValid || !originalIncident) return;
 
     const token = user?.UserResponse?.token;
     if (!token) {
-      setError("Fehler: Du bist nicht eingeloggt.");
+      setError("Authentifizierungsfehler.");
       return;
     }
 
-    setLoading(true);
+    setSaving(true);
     setError(null);
 
     try {
-      const latitude = 52.52 + (Math.random() - 0.5) * 0.02; 
-      const longitude = 13.40 + (Math.random() - 0.5) * 0.02;
+      // Wir kopieren das Original-Objekt und überschreiben nur die Formularfelder
+      const updatedIncident: IncidentData = {
+        ...originalIncident,
+        title,
+        description,
+        category,
+        danger,
+        street,
+        zip: parseInt(zip, 10)
+      };
 
-      await createIncident({
-          title,
-          description,
-          category,
-          danger,
-          street,
-          city,
-          zip: parseInt(zip, 10), 
-          latitude,
-          longitude,
-          country: "Germany",
-          time_category: "permanent"
-      }, file, token);
-
-      alert("Vorfall erfolgreich gemeldet!");
-      onSuccess();
+      // Den neuen Payload mit Formulardaten an die API schicken
+      await updateIncident(updatedIncident, token);
+      
+      // Zurück zur Detailansicht
+      navigate(`/locations/${id}`);
 
     } catch (err) {
-      console.error(err);
-      setError("Fehler beim Senden. Bitte prüfe deine Eingaben.");
+      console.error("Update Error:", err);
+      setError("Fehler beim Speichern der Änderungen.");
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
 
+  if (loadingInitial) return <div className="loading-state">Lade Daten...</div>;
+  if (error && !title) return <div className="error-state">{error}</div>;
+
   return (
-    <div className="add-incident-form">
-      <h2>Neuen Vorfall melden</h2>
+    <div className="add-incident-form" style={{ marginTop: '2rem' }}>
+      <h2>Location bearbeiten</h2>
       
       {error && <div className="error-message">{error}</div>}
 
       <form onSubmit={handleSubmit}>
-        
         <div className="form-group">
           <label>Titel des Vorfalls *</label>
           <input 
@@ -144,7 +160,6 @@ export const AddIncident: React.FC<AddIncidentProps> = ({ onCancel, onSuccess })
             value={title} 
             onChange={handleTitleChange} 
             required 
-            placeholder="z.B. Schlagloch Riesig"
           />
           {titleError && <span style={{ color: 'red', fontSize: '0.85em' }}>{titleError}</span>}
         </div>
@@ -177,7 +192,6 @@ export const AddIncident: React.FC<AddIncidentProps> = ({ onCancel, onSuccess })
             rows={3} 
             value={description} 
             onChange={e => setDescription(e.target.value)} 
-            placeholder="Was genau ist passiert?"
           />
         </div>
 
@@ -187,7 +201,6 @@ export const AddIncident: React.FC<AddIncidentProps> = ({ onCancel, onSuccess })
                 <div style={{ flex: 3, display: 'flex', flexDirection: 'column' }}>
                   <input 
                     className={`input ${streetError ? 'input-error' : ''}`} 
-                    placeholder="Straße" 
                     value={street} 
                     onChange={handleStreetChange} 
                     required 
@@ -199,7 +212,6 @@ export const AddIncident: React.FC<AddIncidentProps> = ({ onCancel, onSuccess })
                   <input 
                     className={`input ${zipError ? 'input-error' : ''}`} 
                     type="text" 
-                    placeholder="PLZ" 
                     value={zip} 
                     onChange={handleZipChange}
                     required
@@ -209,21 +221,11 @@ export const AddIncident: React.FC<AddIncidentProps> = ({ onCancel, onSuccess })
             </div>
         </div>
 
-        <div className="form-group">
-          <label>Bild hochladen (optional)</label>
-          <input 
-            type="file" 
-            className="input" 
-            accept="image/*"
-            onChange={e => setFile(e.target.files ? e.target.files[0] : null)} 
-          />
-        </div>
-
         <div className="button-row">
           <button 
             type="button" 
             className="button secondary" 
-            onClick={onCancel}
+            onClick={() => navigate(`/locations/${id}`)}
           >
             Abbrechen
           </button>
@@ -231,12 +233,11 @@ export const AddIncident: React.FC<AddIncidentProps> = ({ onCancel, onSuccess })
           <button 
             type="submit" 
             className="button" 
-            disabled={loading || !isFormValid}
+            disabled={saving || !isFormValid}
           >
-            {loading ? 'Sende...' : 'Absenden'}
+            {saving ? 'Speichere...' : 'Änderungen speichern'}
           </button>
         </div>
-
       </form>
     </div>
   );
