@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import useUserContext from './UserContext';
-import { createIncident } from '../domain/API';
+import { createIncident, geocodeAddress } from '../domain/API';
 import '../styles/AddIncident.css';
 
 interface AddIncidentProps {
@@ -101,8 +101,12 @@ export const AddIncident: React.FC<AddIncidentProps> = ({ onCancel, onSuccess })
     setError(null);
 
     try {
-      const latitude = 52.52 + (Math.random() - 0.5) * 0.02; 
-      const longitude = 13.40 + (Math.random() - 0.5) * 0.02;
+      // --- NEU: Dynamische Koordinatenauflösung ---
+      const coords = await geocodeAddress(street, zip, city);
+      
+      // Fallback-Koordinaten (Zentrum Berlin), falls die API die Adresse nicht exakt findet
+      const finalLatitude = coords ? coords.latitude : 52.5200;
+      const finalLongitude = coords ? coords.longitude : 13.4050;
 
       await createIncident({
           title,
@@ -112,13 +116,13 @@ export const AddIncident: React.FC<AddIncidentProps> = ({ onCancel, onSuccess })
           street,
           city,
           zip: parseInt(zip, 10), 
-          latitude,
-          longitude,
+          latitude: finalLatitude,
+          longitude: finalLongitude,
           country: "Germany",
           time_category: "permanent"
       }, file, token);
 
-      alert("Vorfall erfolgreich gemeldet!");
+      alert(coords ? "Vorfall erfolgreich gemeldet!" : "Gemeldet, aber Adresse auf Karte nicht exakt gefunden (Standard-Koordinaten verwendet).");
       onSuccess();
 
     } catch (err) {

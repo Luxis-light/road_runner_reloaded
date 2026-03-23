@@ -1,11 +1,14 @@
-// src/components/LocationDetail.tsx
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { fetchIncidentById, deleteIncident } from '../domain/API';
 import type { IncidentData } from '../domain/Incident';
 import useUserContext from './UserContext';
 
-// Importiere die existierenden UND die neuen Styles
+// --- Redux Imports ---
+import { useDispatch, useSelector } from 'react-redux';
+import { type RootState } from '../store/store';
+import { toggleReviewStatus } from '../store/reviewSlice';
+
 import '../styles/Listitems.css'; 
 import '../styles/LocationDetail.css';
 
@@ -13,7 +16,7 @@ export const LocationDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>(); 
   const navigate = useNavigate();
   const { user } = useUserContext();
-
+  const dispatch = useDispatch(); 
   const [incident, setIncident] = useState<IncidentData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -35,6 +38,26 @@ export const LocationDetail: React.FC = () => {
     loadData();
   }, [id]);
 
+  
+  const currentUsername = user?.UserResponse?.user?.username;
+  
+  
+  const myReviewBasket = useSelector((state: RootState) => 
+    currentUsername ? state.review.userBaskets[currentUsername] || [] : []
+  );
+
+  
+  const isNeedsReview = incident ? myReviewBasket.includes(String(incident._id)) : false;
+
+  const handleToggleReview = () => {
+    if (currentUsername && incident) {
+      dispatch(toggleReviewStatus({ 
+        username: currentUsername, 
+        locationId: String(incident._id) 
+      }));
+    }
+  };
+
   const handleDelete = async () => {
     if (!incident || !user?.UserResponse?.token) return;
     
@@ -52,20 +75,23 @@ export const LocationDetail: React.FC = () => {
   if (loading) return <div className="loading-state">Lade Details...</div>;
   if (error || !incident) return <div className="error-state">{error || "Nicht gefunden"}</div>;
 
-  const isOwner = user?.UserResponse?.user?.username === incident.user;
+  const isOwner = currentUsername === incident.user;
 
   return (
     <div className="list-container detail-container">
-      
       <div className="nav-back-wrapper">
         <Link to="/locations" className="back-link">
           Zurück
         </Link>
       </div>
 
-      <div className="card detail-card">
+      
+      <div className={`card detail-card ${isNeedsReview ? 'needs-review-highlight' : ''}`}>
         <div className="header">
-          <h2>{incident.title}</h2>
+          <h2>
+            {incident.title} 
+            {isNeedsReview && <span style={{ color: 'orange', marginLeft: '10px' }}>(Needs Review)</span>}
+          </h2>
           <span className={`category ${incident.category}`}>{incident.category}</span>
         </div>
 
@@ -81,9 +107,7 @@ export const LocationDetail: React.FC = () => {
 
         <div className="detail-content">
           <p><strong>Beschreibung:</strong> {incident.description}</p>
-          
           <hr className="detail-separator" />
-          
           <div className="detail-grid">
             <p><strong>Adresse:</strong> {incident.street}, {incident.zip} {incident.city}</p>
             <p><strong>Gemeldet von:</strong> {incident.user}</p>
@@ -104,10 +128,18 @@ export const LocationDetail: React.FC = () => {
             
             <button 
               className="button button-auto" 
-              
-              onClick={() => navigate(`/locations/${id}/edit`)}
+              onClick={() => navigate(`/locations/${incident.incident_id}/edit`)}
             >
               Bearbeiten
+            </button>
+
+            {/* --- Neuer Review Toggle Button --- */}
+            <button 
+              className={`button button-auto ${isNeedsReview ? 'button-warning' : 'button-secondary'}`} 
+              onClick={handleToggleReview}
+              style={{ backgroundColor: isNeedsReview ? '#f39c12' : undefined }}
+            >
+              {isNeedsReview ? 'Unmark Review' : 'Mark as Needs Review'}
             </button>
           </div>
         )}

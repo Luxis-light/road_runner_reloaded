@@ -117,3 +117,37 @@ export const updateIncident = async (
   
  
 };
+
+export const geocodeAddress = async (street: string, zip: string | number, city: string): Promise<{ latitude: number, longitude: number } | null> => {
+  try {
+    // URL-konforme Aufbereitung des Suchstrings
+    const query = encodeURIComponent(`${street}, ${zip} ${city}, Germany`);
+    
+    const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}&limit=1`, {
+      headers: {
+        // Nominatim verlangt einen User-Agent zur Identifizierung der App
+        'User-Agent': 'RoadRunnerApp/1.0' 
+      }
+    });
+    
+    if (!response.ok) {
+      console.error("Nominatim API Antwort nicht ok:", response.status);
+      return null;
+    }
+    
+    const data = await response.json();
+    
+    // Wenn ein Ergebnis gefunden wurde, Rückgabe der Koordinaten
+    if (data && data.length > 0) {
+      return {
+        latitude: parseFloat(data[0].lat),
+        longitude: parseFloat(data[0].lon)
+      };
+    }
+    
+    return null; // Keine Ergebnisse gefunden
+  } catch (error) {
+    console.error("Geocoding API Fehler:", error);
+    return null;
+  }
+};

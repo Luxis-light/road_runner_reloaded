@@ -11,6 +11,7 @@ import { About, ErrorPage } from './components/Placeholder';
 import { LocationDetail } from './components/LocationDetail';
 import { MapComponent } from './components/Map';
 import { EditLocation } from './components/EditLocation';
+import { ReviewBasket } from './components/ReviewBasket';
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user } = useUserContext();
   if (!user) {
@@ -37,6 +38,13 @@ const AppContent = () => {
             </ProtectedRoute>
           } />
 
+          <Route path="/locations/basket" element={
+  <ProtectedRoute>
+    <ReviewBasket />
+  </ProtectedRoute>
+} />
+
+
           <Route path="/locations/add" element={
             <ProtectedRoute>
               <AddIncident 
@@ -51,7 +59,8 @@ const AppContent = () => {
               <LocationDetail />
             </ProtectedRoute>
           } />
-
+          
+          
           
           <Route path="/locations/:id/edit" element={
             <ProtectedRoute>

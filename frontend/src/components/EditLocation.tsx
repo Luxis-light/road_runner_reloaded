@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import useUserContext from './UserContext';
-import { fetchIncidentById, updateIncident } from '../domain/API';
+import { fetchIncidentById, geocodeAddress, updateIncident } from '../domain/API';
 import type { IncidentData } from '../domain/Incident';
 import '../styles/AddIncident.css'; 
 
@@ -14,7 +14,7 @@ export const EditLocation: React.FC = () => {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // WICHTIG: Wir speichern das komplette Original-Objekt, um es später zu überschreiben
+ 
   const [originalIncident, setOriginalIncident] = useState<IncidentData | null>(null);
 
   // Formular States
@@ -118,7 +118,21 @@ export const EditLocation: React.FC = () => {
     setError(null);
 
     try {
-      // Wir kopieren das Original-Objekt und überschreiben nur die Formularfelder
+      // --- NEU: Koordinaten-Update Logik ---
+      let currentLat = originalIncident.latitude;
+      let currentLon = originalIncident.longitude;
+
+      // Evaluation: Hat sich der adressbezogene State geändert?
+      if (street !== originalIncident.street || parseInt(zip, 10) !== originalIncident.zip) {
+        const coords = await geocodeAddress(street, zip, "Berlin");
+        if (coords) {
+          currentLat = coords.latitude;
+          currentLon = coords.longitude;
+        } else {
+          alert("Achtung: Die neue Adresse konnte geographisch nicht aufgelöst werden. Die alten Map-Marker bleiben bestehen.");
+        }
+      }
+
       const updatedIncident: IncidentData = {
         ...originalIncident,
         title,
@@ -126,13 +140,14 @@ export const EditLocation: React.FC = () => {
         category,
         danger,
         street,
-        zip: parseInt(zip, 10)
+        zip: parseInt(zip, 10),
+        // Die neu evaluierten Koordinaten in die Payload übergeben
+        latitude: currentLat,
+        longitude: currentLon
       };
 
-      // Den neuen Payload mit Formulardaten an die API schicken
       await updateIncident(updatedIncident, token);
       
-      // Zurück zur Detailansicht
       navigate(`/locations/${id}`);
 
     } catch (err) {
