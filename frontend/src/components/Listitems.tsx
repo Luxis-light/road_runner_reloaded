@@ -6,9 +6,8 @@ import { deleteIncident } from '../domain/API';
 import '../styles/Listitems.css'; 
 import { useNavigate } from 'react-router-dom'; 
 
-// --- Redux Imports ---
 import { useSelector } from 'react-redux';
-import { type RootState } from '../store/store';
+import { type RootState } from '../store/store'
 
 interface ListitemsProps {
   item: IncidentData;

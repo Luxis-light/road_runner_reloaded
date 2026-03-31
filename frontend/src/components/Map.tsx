@@ -8,12 +8,12 @@ import type { IncidentData } from '../domain/Incident';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
-// --- Redux Imports ---
+
 import { useSelector } from 'react-redux';
 import { type RootState } from '../store/store';
 import useUserContext from './UserContext';
 
-// Standard-Marker
+
 let DefaultIcon = L.icon({
     iconUrl: icon,
     shadowUrl: iconShadow,
@@ -22,7 +22,7 @@ let DefaultIcon = L.icon({
     popupAnchor: [1, -34],
 });
 
-// Neuer, orangener Marker für "Needs Review"
+
 let OrangeIcon = L.icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
     shadowUrl: iconShadow,
@@ -37,7 +37,7 @@ export const MapComponent: React.FC = () => {
   const [incidents, setIncidents] = useState<IncidentData[]>([]);
   const navigate = useNavigate();
   
-  // --- Redux Setup ---
+ 
   const { user } = useUserContext();
   const currentUsername = user?.UserResponse?.user?.username;
   const myReviewBasket = useSelector((state: RootState) => 

@@ -4,10 +4,9 @@ import { fetchIncidentById, deleteIncident } from '../domain/API';
 import type { IncidentData } from '../domain/Incident';
 import useUserContext from './UserContext';
 
-// --- Redux Imports ---
 import { useDispatch, useSelector } from 'react-redux';
 import { type RootState } from '../store/store';
-import { toggleReviewStatus } from '../store/reviewSlice';
+import { toggleReviewStatus, removeFromBasket } from '../store/reviewSlice';
 
 import '../styles/Listitems.css'; 
 import '../styles/LocationDetail.css';
@@ -64,6 +63,10 @@ export const LocationDetail: React.FC = () => {
     if (window.confirm("Willst du diesen Eintrag wirklich unwiderruflich löschen?")) {
       try {
         await deleteIncident(String(incident.incident_id), user.UserResponse.token);
+        dispatch(removeFromBasket({ 
+          username: currentUsername || '', 
+          locationId: String(incident._id) 
+        }));
         alert("Gelöscht!");
         navigate('/locations'); 
       } catch (e) {
@@ -133,7 +136,7 @@ export const LocationDetail: React.FC = () => {
               Bearbeiten
             </button>
 
-            {/* --- Neuer Review Toggle Button --- */}
+           
             <button 
               className={`button button-auto ${isNeedsReview ? 'button-warning' : 'button-secondary'}`} 
               onClick={handleToggleReview}

@@ -14,13 +14,13 @@ export const fetchIncidents = async (): Promise<IncidentData[]> => {
   // Sende die Anfrage an den Endpunkt
   const response = await fetch(`${API_URL}/incidents`);
 
-  // Fehlerbehandlung: Wenn Status nicht 200-299 ist (z.B. 404, 500)
+  
   if (!response.ok) {
-    // Dieser Error wird vom 'catch'-Block in der Komponente gefangen
+    
     throw new Error(`HTTP-Fehler beim Abrufen der Incidents! Status: ${response.status}`);
   }
 
-  // Wandle die Antwort in JSON um und gib sie als korrekten Typ zurück
+ 
   const data = await response.json() as IncidentData[];
   return data;
 };
@@ -120,12 +120,11 @@ export const updateIncident = async (
 
 export const geocodeAddress = async (street: string, zip: string | number, city: string): Promise<{ latitude: number, longitude: number } | null> => {
   try {
-    // URL-konforme Aufbereitung des Suchstrings
+   
     const query = encodeURIComponent(`${street}, ${zip} ${city}, Germany`);
     
     const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}&limit=1`, {
       headers: {
-        // Nominatim verlangt einen User-Agent zur Identifizierung der App
         'User-Agent': 'RoadRunnerApp/1.0' 
       }
     });
@@ -137,7 +136,7 @@ export const geocodeAddress = async (street: string, zip: string | number, city:
     
     const data = await response.json();
     
-    // Wenn ein Ergebnis gefunden wurde, Rückgabe der Koordinaten
+    
     if (data && data.length > 0) {
       return {
         latitude: parseFloat(data[0].lat),
@@ -145,7 +144,7 @@ export const geocodeAddress = async (street: string, zip: string | number, city:
       };
     }
     
-    return null; // Keine Ergebnisse gefunden
+    return null; 
   } catch (error) {
     console.error("Geocoding API Fehler:", error);
     return null;

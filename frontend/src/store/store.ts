@@ -1,4 +1,3 @@
-// src/store/store.ts
 import { configureStore } from '@reduxjs/toolkit';
 import { 
   persistStore, 
@@ -10,10 +9,10 @@ import {
   PURGE, 
   REGISTER 
 } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // Bindet localStorage API an
+import storage from 'redux-persist/lib/storage'; 
 import reviewReducer from './reviewSlice';
 
-// Persistenz-Konfiguration
+
 const persistConfig = {
   key: 'root',
   version: 1,

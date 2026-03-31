@@ -17,7 +17,7 @@ export const EditLocation: React.FC = () => {
  
   const [originalIncident, setOriginalIncident] = useState<IncidentData | null>(null);
 
-  // Formular States
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('bad');
@@ -25,7 +25,7 @@ export const EditLocation: React.FC = () => {
   const [street, setStreet] = useState('');
   const [zip, setZip] = useState<string>('');
 
-  // Validierungs States
+
   const [titleError, setTitleError] = useState<string>('');
   const [streetError, setStreetError] = useState<string>('');
   const [zipError, setZipError] = useState<string>('');
@@ -55,10 +55,10 @@ export const EditLocation: React.FC = () => {
           return;
         }
 
-        // Gesamtes Objekt speichern
+        
         setOriginalIncident(incident);
 
-        // Formular befüllen
+        
         setTitle(incident.title);
         setDescription(incident.description || '');
         setCategory(incident.category);
@@ -118,11 +118,10 @@ export const EditLocation: React.FC = () => {
     setError(null);
 
     try {
-      // --- NEU: Koordinaten-Update Logik ---
+    
       let currentLat = originalIncident.latitude;
       let currentLon = originalIncident.longitude;
 
-      // Evaluation: Hat sich der adressbezogene State geändert?
       if (street !== originalIncident.street || parseInt(zip, 10) !== originalIncident.zip) {
         const coords = await geocodeAddress(street, zip, "Berlin");
         if (coords) {
@@ -141,7 +140,6 @@ export const EditLocation: React.FC = () => {
         danger,
         street,
         zip: parseInt(zip, 10),
-        // Die neu evaluierten Koordinaten in die Payload übergeben
         latitude: currentLat,
         longitude: currentLon
       };

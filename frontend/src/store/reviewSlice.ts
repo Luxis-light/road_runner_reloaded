@@ -1,8 +1,6 @@
-// src/store/reviewSlice.ts
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 interface ReviewState {
-  // Dictionary: Mapping von username -> Array von Location BSON _ids
   userBaskets: Record<string, string[]>;
 }
 
@@ -17,7 +15,6 @@ const reviewSlice = createSlice({
     toggleReviewStatus: (state, action: PayloadAction<{ username: string; locationId: string }>) => {
       const { username, locationId } = action.payload;
       
-      // Lazy Initialization: Array für den User anlegen, falls es noch nicht existiert
       if (!state.userBaskets[username]) {
         state.userBaskets[username] = [];
       }
@@ -26,15 +23,23 @@ const reviewSlice = createSlice({
       const index = basket.indexOf(locationId);
       
       if (index >= 0) {
-        // Mutation: ID ist vorhanden -> aus dem Array entfernen (O(n) shift)
         basket.splice(index, 1);
       } else {
-        // ID ist nicht vorhanden -> dem Array anfügen (O(1) push)
         basket.push(locationId);
       }
+    },
+  removeFromBasket: (state, action: PayloadAction<{ username: string; locationId: string }>) => {
+      const { username, locationId } = action.payload;
+      if (state.userBaskets[username]) {
+        // Filtere die gelöschte ID aus dem Array heraus
+        state.userBaskets[username] = state.userBaskets[username].filter(
+          id => id !== locationId
+        );
+      }
     }
-  }
+  },
 });
 
-export const { toggleReviewStatus } = reviewSlice.actions;
+
+export const { toggleReviewStatus, removeFromBasket } = reviewSlice.actions;
 export default reviewSlice.reducer;
