@@ -31,7 +31,6 @@ const reviewSlice = createSlice({
   removeFromBasket: (state, action: PayloadAction<{ username: string; locationId: string }>) => {
       const { username, locationId } = action.payload;
       if (state.userBaskets[username]) {
-        // Filtere die gelöschte ID aus dem Array heraus
         state.userBaskets[username] = state.userBaskets[username].filter(
           id => id !== locationId
         );
